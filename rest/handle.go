@@ -46,7 +46,7 @@ func newHandler(pattern, method string, handle HandleFunc) *Handler {
     return handler
 }
 
-// 将路劲匹配模式转换为正则表达式。
+// 将路径匹配模式转换为正则表达式。
 func (this *Handler) regex(s string) *regexp.Regexp {
     reg, _ := regexp.Compile(`{(\w+)}`)
     expr := reg.ReplaceAllString(s, `(?P<$1>[^/\?]+)`)
