@@ -5,34 +5,38 @@ type (
         Check(Value) bool
     }
 
-    RangeRule struct {
+    StringRule struct {
+        Name      string
+        MinLength int
+        MaxLength int
+    }
+
+    IntRule struct {
         Name string
         Min  int
         Max  int
     }
 )
 
-/* --- rule --------------------------------------- */
+/* --- rule ---------------------------------------------------------- */
 
-func (this *RangeRule) Check(value Value) bool {
-    v, ok := value[this.Name]
-    if !ok {
+func (this *StringRule) Check(value Value) bool {
+    if n := len(value.String(this.Name)); n < this.MinLength || n > this.MaxLength {
         return false
-    }
-
-    switch o := v.(type) {
-    case string:
-        if n := len(o); n < this.Min || n > this.Max {
-            return false
-        }
-    case int:
-        if o < this.Min || o > this.Max {
-            return false
-        }
     }
 
     return true
 }
+
+func (this *IntRule) Check(value Value) bool {
+    if n := value.Int(this.Name); n < this.Min || n > this.Max {
+        return false
+    }
+
+    return true
+}
+
+/* --- check --------------------------------------------------------- */
 
 func RuleCheck(value Value, rules ...Rule) bool {
     for _, r := range rules {

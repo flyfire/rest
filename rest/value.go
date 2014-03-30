@@ -42,7 +42,9 @@ func (this Value) Set(key string, value interface{}) Value {
 
 func (this Value) String(key string) string {
     if v, ok := this[key]; ok {
-        return v.(string)
+        if s, ok := v.(string); ok {
+            return s
+        }
     }
 
     return ""
