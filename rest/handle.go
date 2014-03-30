@@ -6,6 +6,7 @@ import (
     "io"
     "io/ioutil"
     "net/url"
+    "path/filepath"
     "regexp"
     "strings"
 )
@@ -25,13 +26,15 @@ type (
 
 /* --- handler -------------------------------------------------------------------- */
 
-func newHandler(pattern, method string, handle HandleFunc) *Handler {
+func newHandler(prefix, pattern, method string, handle HandleFunc) *Handler {
     // pattern 以 "!" 开头表示该调用需要身份验证。
     var auth bool
     if pattern[0] == '!' {
         pattern = pattern[1:]
         auth = true
     }
+
+    pattern = filepath.Join(prefix, pattern)
 
     handler := &Handler{
         auth:    auth,

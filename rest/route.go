@@ -6,7 +6,6 @@ import (
     "encoding/json"
     "log"
     "net/http"
-    "path/filepath"
     "strings"
     "sync"
 )
@@ -39,8 +38,7 @@ func (this *RestRouter) HandleFunc(pattern, method string, handle HandleFunc) {
     this.mutex.Lock()
     defer this.mutex.Unlock()
 
-    pattern = filepath.Join(this.Pattern, pattern)
-    this.handlers = append(this.handlers, newHandler(pattern, method, handle))
+    this.handlers = append(this.handlers, newHandler(this.Pattern, pattern, method, handle))
 }
 
 // 输出日志。
