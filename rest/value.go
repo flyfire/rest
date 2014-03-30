@@ -1,5 +1,7 @@
 package rest
 
+import "strconv"
+
 type Value map[string]interface{}
 
 const (
@@ -44,6 +46,21 @@ func (this Value) String(key string) string {
     }
 
     return ""
+}
+
+func (this Value) Int(key string) int {
+    if v, ok := this[key]; ok {
+        switch v.(type) {
+        case string:
+            if n, err := strconv.Atoi(v.(string)); err == nil {
+                return n
+            }
+        case int:
+            return v.(int)
+        }
+    }
+
+    return 0
 }
 
 func (this Value) Status() string {

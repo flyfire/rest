@@ -51,7 +51,7 @@ func (this *Handler) regex(s string) *regexp.Regexp {
     reg, _ := regexp.Compile(`{(\w+)}`)
     expr := reg.ReplaceAllString(s, `(?P<$1>[^/\?]+)`)
 
-    reg, err := regexp.Compile(expr)
+    reg, err := regexp.Compile("^" + expr)
     if err != nil {
         panic(err)
     }
